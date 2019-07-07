@@ -8,7 +8,7 @@ import com.apollo.hibernate.demo.entity.Instructor;
 import com.apollo.hibernate.demo.entity.InstructorDetail;
 import com.apollo.hibernate.demo.entity.Student;
 
-public class CreateDemo {
+public class GetInstructorDetailDemo {
 
 	public static void main(String[] args) {
 		//create session factory	
@@ -21,35 +21,31 @@ public class CreateDemo {
 		//create session
 		Session session = factory.getCurrentSession();
 		try {
-			//create the objects
-			Instructor instructor = new Instructor("Apollo","Randomowski","apollo@cooltext.com");
-			InstructorDetail instructorDetail= new InstructorDetail("http://www.youtube.com/apollo","gaming");
-			
-			//Instructor instructor = new Instructor("Bruh","bruhowski","bruh@cooltext.com");
-			//InstructorDetail instructorDetail= new InstructorDetail("http://www.youtube.com/bruh","hanging out with broskis");
-			
-			//associate objects 
-			instructor.setInstructorDetail(instructorDetail);
-			
 			//start transaction
 			session.beginTransaction();
 			
-			//save the instructor
-			System.out.println("Saving...");
-			session.save(instructor);
-
+			
+			//get the instructor detail
+			int theId=2;
+			InstructorDetail instructorDetail=session.get(InstructorDetail.class,theId);
+			
+			
+			//print instructor detail
+			System.out.println("instructor detail: "+instructorDetail );
+			
+			//print associated instructor
+			System.out.println("the associated instructor: "+instructorDetail.getInstructor());
 			
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done! ");
-			
-			
+			} catch(Exception e) {	
+			e.printStackTrace();
 		} finally {
+			session.close();
 			factory.close();
 		}
-		
-		
-	
 	}
-
 }
+
+

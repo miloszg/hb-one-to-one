@@ -6,9 +6,9 @@ import org.hibernate.cfg.Configuration;
 
 import com.apollo.hibernate.demo.entity.Instructor;
 import com.apollo.hibernate.demo.entity.InstructorDetail;
-import com.apollo.hibernate.demo.entity.Student;
 
-public class CreateDemo {
+
+public class DeleteDemo {
 
 	public static void main(String[] args) {
 		//create session factory	
@@ -21,23 +21,19 @@ public class CreateDemo {
 		//create session
 		Session session = factory.getCurrentSession();
 		try {
-			//create the objects
-			Instructor instructor = new Instructor("Apollo","Randomowski","apollo@cooltext.com");
-			InstructorDetail instructorDetail= new InstructorDetail("http://www.youtube.com/apollo","gaming");
-			
-			//Instructor instructor = new Instructor("Bruh","bruhowski","bruh@cooltext.com");
-			//InstructorDetail instructorDetail= new InstructorDetail("http://www.youtube.com/bruh","hanging out with broskis");
-			
-			//associate objects 
-			instructor.setInstructorDetail(instructorDetail);
-			
 			//start transaction
 			session.beginTransaction();
 			
-			//save the instructor
-			System.out.println("Saving...");
-			session.save(instructor);
-
+			//get instructor by primary key
+			int theId=1;
+			Instructor instructor = session.get(Instructor.class,theId);
+			System.out.println("found: "+instructor);
+			
+			//delete instructor (cascade delete)
+			if(instructor!=null) {
+				System.out.println("Deleting instructor");
+				session.delete(instructor);
+			}
 			
 			//commit transaction
 			session.getTransaction().commit();
